@@ -1,0 +1,21 @@
+{
+  "devDependencies": {
+    "esbuild": "^0.17.11",
+    "tailwindcss": "^3.2.7"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "phoenix": "file:../deps/phoenix",
+    "phoenix_html": "file:../deps/phoenix_html",
+    "phoenix_live_view": "file:../deps/phoenix_live_view",
+    "topbar": "^2.0.1"
+  },
+  "scripts": {
+    "build.js": "node esbuild.js",
+    "watch.js": "node esbuild.js --watch",
+    "deploy.js": "node esbuild.js --deploy",
+    "build.css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css",
+    "watch.css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css --watch",
+    "deploy.css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css --minify"
+  }
+}

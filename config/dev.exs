@@ -25,8 +25,16 @@ config :phoenix_with_npm, PhoenixWithNpmWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "cZc9mWXsYwZho2V9maKIuDopEJUewOJeHezDRCFNcQZjUTIzH9u7ZKZ73+dMCyfs",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+    npm: [
+      "run",
+      "watch.js",
+      cd: Path.expand("../assets", __DIR__)
+    ],
+    npm: [
+      "run",
+      "watch.css",
+      cd: Path.expand("../assets", __DIR__)
+    ]
   ]
 
 # ## SSL Support
