@@ -1,14 +1,16 @@
 const esbuild = require("esbuild");
 
-// Decide which mode to proceed with
-let mode = "build";
-process.argv.slice(2).forEach((arg) => {
-  if (arg === "--watch") {
-    mode = "watch";
-  } else if (arg === "--deploy") {
-    mode = "deploy";
-  }
-});
+const args = process.argv.slice(2);
+const watch = args.includes('--watch');
+const deploy = args.includes('--deploy');
+
+const loader = {
+  // Add loaders for images/fonts/etc, e.g. { '.svg': 'file' }
+};
+
+const plugins = [
+  // Add and configure plugins here
+];
 
 // Define esbuild options
 let opts = {
@@ -18,33 +20,30 @@ let opts = {
   target: "es2017",
   outdir: "../priv/static/assets",
   external: ["*.css", "fonts/*", "images/*"],
+  loader: loader,
+  plugins: plugins,
 };
 
-switch (mode) {
-  case "build":
-    esbuild.build(opts);
-    break;
+if (deploy) {
+  opts = {
+    ...opts,
+    minify: true,
+  };
+}
 
-  case "deploy":
-    opts = {
-      minify: true,
-      ...opts,
-    };
-    esbuild.build(opts);
-    break;
-
-  case "watch":
-    opts = {
-      sourcemap: "inline",
-      ...opts,
-    };
-    esbuild
-      .context(opts)
-      .then((ctx) => {
-        ctx.watch();
-      })
-      .catch((error) => {
-        process.exit(1);
-      });
-    break;
+if (watch) {
+  opts = {
+    ...opts,
+    sourcemap: "inline",
+  };
+  esbuild
+    .context(opts)
+    .then((ctx) => {
+      ctx.watch();
+    })
+    .catch((_error) => {
+      process.exit(1);
+    });
+} else {
+  esbuild.build(opts);
 }
